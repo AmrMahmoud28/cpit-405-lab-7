@@ -50,6 +50,7 @@ document
 
 const createImages = (data) => {
     resultsElement.innerHTML = "";
+    resultsElement.classList.add("dataBorder");
     for (let item of data.results) {
         const imgElement = document.createElement("img");
         imgElement.src = item.urls.small;
