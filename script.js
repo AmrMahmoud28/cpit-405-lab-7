@@ -19,11 +19,34 @@ document.getElementById("xhrSearch").addEventListener("click", () => {
     xhr.send();
 });
 
-document.getElementById("fetchSearch").addEventListener("click", () => {});
+document.getElementById("fetchSearch").addEventListener("click", () => {
+    let queryTerm = searchQuery.value.trim();
+    fetch(`${API_URL}?query=${queryTerm}`, {
+        method: "GET",
+        headers: {
+            Authorization: `Client-ID ${ACCESS_KEY}`,
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => createImages(data))
+        .catch((error) => console.error("Error:", error));
+});
 
 document
     .getElementById("fetchAsyncAwaitSearch")
-    .addEventListener("click", () => {});
+    .addEventListener("click", async () => {
+        let queryTerm = searchQuery.value.trim();
+        const response = await fetch(`${API_URL}?query=${queryTerm}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Client-ID ${ACCESS_KEY}`,
+            },
+        });
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            createImages(jsonResponse);
+        }
+    });
 
 const createImages = (data) => {
     resultsElement.innerHTML = "";
